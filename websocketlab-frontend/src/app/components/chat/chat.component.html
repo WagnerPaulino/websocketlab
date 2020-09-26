@@ -1,0 +1,11 @@
+<p>{{(onConnected | async) ? 'Conectado' : 'Desconectado'}}</p>
+<button (click)="conectar()" [disabled]="(onConnected | async)">Conectar</button>
+<button (click)="sair()" [disabled]="!(onConnected | async)">Sair</button>
+<div *ngFor="let message of messages | async">
+    <span>{{message.user}}: {{message.message}}</span>
+</div>
+<form (submit)="submit()" autocomplete="off">
+    <input type="text" placeholder="User" [(ngModel)]="message.user" name="user">
+    <input type="text" placeholder="Mensagem" [(ngModel)]="message.message" name="message">
+    <button type="submit" [disabled]="!(onConnected | async) || message.message.trim().length === 0">Enviar</button>
+</form>
