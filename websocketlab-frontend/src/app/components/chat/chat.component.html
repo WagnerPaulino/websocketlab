@@ -7,5 +7,5 @@
 <form (submit)="submit()" autocomplete="off">
     <input type="text" placeholder="User" [(ngModel)]="message.user" name="user">
     <input type="text" placeholder="Mensagem" [(ngModel)]="message.message" name="message">
-    <button type="submit" [disabled]="!(onConnected | async) || message.message.trim().length === 0">Enviar</button>
+    <button type="submit" [disabled]="!(onConnected | async) || message?.message?.trim().length === 0">Enviar</button>
 </form>
