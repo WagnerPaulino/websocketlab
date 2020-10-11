@@ -1,28 +1,25 @@
 package com.websocketlab.websocketlab.configuration;
 
-import org.springframework.context.annotation.Bean;
 import org.springframework.context.annotation.Configuration;
-import org.springframework.web.socket.WebSocketHandler;
-import org.springframework.web.socket.config.annotation.EnableWebSocket;
-import org.springframework.web.socket.config.annotation.WebSocketConfigurer;
-import org.springframework.web.socket.config.annotation.WebSocketHandlerRegistry;
-
-import com.websocketlab.websocketlab.handle.ChatWebSocketHandle;
+import org.springframework.messaging.simp.config.MessageBrokerRegistry;
+import org.springframework.web.socket.config.annotation.EnableWebSocketMessageBroker;
+import org.springframework.web.socket.config.annotation.StompEndpointRegistry;
+import org.springframework.web.socket.config.annotation.WebSocketMessageBrokerConfigurer;
 
 @Configuration
-@EnableWebSocket
-public class WebSocketConfiguration implements WebSocketConfigurer {
+@EnableWebSocketMessageBroker
+public class WebSocketConfiguration implements WebSocketMessageBrokerConfigurer {
 
-	private final static String CHAT_URL = "/chat";
+	private final static String CHAT_URL = "/ws";
 
 	@Override
-	public void registerWebSocketHandlers(WebSocketHandlerRegistry arg0) {
-		arg0.addHandler(getChatWebSocketHandle(), CHAT_URL).setAllowedOrigins("*");
+	public void configureMessageBroker(MessageBrokerRegistry config) {
+		config.enableSimpleBroker("/topic");
+		config.setApplicationDestinationPrefixes("/app");
 	}
 
-	@Bean
-	public WebSocketHandler getChatWebSocketHandle() {
-		return new ChatWebSocketHandle();
+	@Override
+	public void registerStompEndpoints(StompEndpointRegistry registry) {
+		registry.addEndpoint(CHAT_URL).setAllowedOrigins("http://localhost:4200").withSockJS();
 	}
-
 }
