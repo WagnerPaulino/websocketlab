@@ -10,10 +10,10 @@ import { environment } from 'src/environments/environment';
 export const myRxStompConfig: InjectableRxStompConfig = {
   brokerURL: environment.urlWebsocket,
 
-  connectHeaders: {
-    login: 'guest',
-    passcode: 'guest'
-  },
+  // connectHeaders: {
+  //   login: 'guest',
+  //   passcode: 'guest'
+  // },
 
   heartbeatIncoming: 0,
   heartbeatOutgoing: 20000,

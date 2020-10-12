@@ -2,6 +2,7 @@ import { Injectable } from '@angular/core';
 import { RxStompService } from '@stomp/ng2-stompjs';
 import { Subject } from 'rxjs';
 import { Message } from '../domain/message';
+import { environment } from 'src/environments/environment';
 
 @Injectable({
   providedIn: 'root'
@@ -18,15 +19,15 @@ export class WebsocketService {
   }
 
   openWebSocket = () => {
-    this.rxStompService.stompClient.onConnect = this.openned;
+    this.rxStompService.connected$.subscribe(this.openned);
     this.rxStompService.stompClient.onWebSocketClose = this.closed;
-    this.rxStompService.stompClient.onWebSocketError = this.error;
-    this.rxStompService.watch('/topic/greetings/').subscribe(this.handleMessage);
+    this.rxStompService.stompErrors$.subscribe(this.error);
   }
 
   private openned = (event) => {
     console.log('Connected', event);
-    this.setConnected(true);
+    this.setConnected(this.rxStompService.connected());
+    this.rxStompService.watch('/topic/greetings').subscribe(this.handleMessage);
   }
 
   private handleMessage = (event) => {
@@ -38,13 +39,13 @@ export class WebsocketService {
 
   private closed = (event) => {
     console.log('Closed ', event);
-    this.setConnected(false);
+    this.setConnected(this.rxStompService.connected());
 
   }
 
   public sendMessage = (message: Message) => {
     console.log('send ', message);
-    this.rxStompService.publish({ destination: '/app/hello/', body: JSON.stringify(message) });
+    this.rxStompService.publish({ destination: '/app/hello', body: JSON.stringify(message) });
   }
 
   public webSocketClose = () => {
@@ -56,7 +57,7 @@ export class WebsocketService {
   }
 
   private error(event) {
-    console.error(event);
+    console.log(event);
 
   }
 
