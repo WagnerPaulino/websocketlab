@@ -31,7 +31,7 @@ export class ChatComponent implements OnInit {
   submit() {
     if (this.isConnected) {
       this.webSocketService.sendMessage(this.message);
-      this.message.message = '';
+      // this.message.message = '';
     }
   }
 

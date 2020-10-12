@@ -1,28 +1,27 @@
 import { Injectable } from '@angular/core';
-import { Message } from '../domain/message';
-import { environment } from 'src/environments/environment';
+import { RxStompService } from '@stomp/ng2-stompjs';
 import { Subject } from 'rxjs';
-
-const URL_WEBSOCKET = environment.urlWebsocket;
+import { Message } from '../domain/message';
 
 @Injectable({
   providedIn: 'root'
 })
 export class WebsocketService {
 
-  webSocket: WebSocket;
   messages: Message[] = [];
   isConnected: boolean = false;
   onMessages: Subject<Message[]> = new Subject();
   onConnected: Subject<boolean> = new Subject();
 
-  constructor() { }
+  constructor(private rxStompService: RxStompService) {
+    this.openWebSocket();
+  }
 
   openWebSocket = () => {
-    this.webSocket = new WebSocket(URL_WEBSOCKET);
-    this.webSocket.onopen = this.openned;
-    this.webSocket.onmessage = this.handleMessage;
-    this.webSocket.onclose = this.closed;
+    this.rxStompService.stompClient.onConnect = this.openned;
+    this.rxStompService.stompClient.onWebSocketClose = this.closed;
+    this.rxStompService.stompClient.onWebSocketError = this.error;
+    this.rxStompService.watch('/topic/greetings/').subscribe(this.handleMessage);
   }
 
   private openned = (event) => {
@@ -32,7 +31,7 @@ export class WebsocketService {
 
   private handleMessage = (event) => {
     console.log('receive ', event);
-    let message = JSON.parse(event.data);
+    let message = JSON.parse(event.body);
     this.messages.push(message);
     this.onMessages.next(this.messages);
   }
@@ -45,16 +44,20 @@ export class WebsocketService {
 
   public sendMessage = (message: Message) => {
     console.log('send ', message);
-    this.webSocket.send(JSON.stringify(message));
+    this.rxStompService.publish({ destination: '/app/hello/', body: JSON.stringify(message) });
   }
 
   public webSocketClose = () => {
-    this.webSocket.close();
   }
 
   private setConnected = (bool: boolean) => {
     this.isConnected = bool;
     this.onConnected.next(this.isConnected);
+  }
+
+  private error(event) {
+    console.error(event);
+
   }
 
 
