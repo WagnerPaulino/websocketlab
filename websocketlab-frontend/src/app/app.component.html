@@ -1,1 +1,13 @@
-<app-chat></app-chat>
+<nz-layout class="layout">
+    <nz-layout>
+        <nz-header>
+            <app-status></app-status>
+        </nz-header>
+        <nz-content>
+            <div class="inner-content">
+                <router-outlet></router-outlet>
+            </div>
+        </nz-content>
+        <nz-footer></nz-footer>
+    </nz-layout>
+</nz-layout>

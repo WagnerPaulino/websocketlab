@@ -13,16 +13,17 @@ export class ChatComponent implements OnInit {
   public message: Message = new Message();
   public messages: Subject<Message[]>;
   public onConnected: Subject<boolean> = new Subject<boolean>();
-  private isConnected: boolean = false;
+  public isConnected: boolean = false;
+  public userValid;
 
   constructor(private webSocketService: WebsocketService) { }
 
   ngOnInit(): void {
     this.initComponent();
+    this.userValid = false;
   }
 
   private initComponent() {
-    this.onConnected.next(false);
     this.onConnected = this.webSocketService.onConnected;
     this.messages = this.webSocketService.onMessages;
     this.webSocketService.onConnected.subscribe(bool => this.isConnected = bool);
@@ -31,7 +32,7 @@ export class ChatComponent implements OnInit {
   submit() {
     if (this.isConnected) {
       this.webSocketService.sendMessage(this.message);
-      // this.message.message = '';
+      this.message.message = '';
     }
   }
 
@@ -45,6 +46,10 @@ export class ChatComponent implements OnInit {
     if (this.isConnected) {
       this.webSocketService.webSocketClose()
     }
+  }
+
+  validarUser() {
+    this.userValid = this.message?.user && this.message?.user?.trim().length > 0;
   }
 
 }
