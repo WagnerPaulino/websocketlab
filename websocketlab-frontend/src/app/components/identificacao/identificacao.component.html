@@ -1,7 +1,7 @@
 <div fxLayout="column" fxLayoutAlign="center center" style="min-height: 360px;">
     <form (submit)="submit()">
         <nz-input-group nzSearch [nzAddOnAfter]="entrarInput" style="width: 90vh;">
-            <input type="text" nz-input placeholder="User" [(ngModel)]="user" autocomplete name="user">
+            <input type="text" nz-input placeholder="Diga o seu nome" [(ngModel)]="user" autocomplete name="user">
         </nz-input-group>
         <ng-template #entrarInput>
             <button nz-button nzType="primary" type="submit">Entrar</button>
