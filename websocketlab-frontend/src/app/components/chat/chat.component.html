@@ -1,12 +1,15 @@
 <form (submit)="submit()" autocomplete="off" *ngIf="userValid; else identificacao">
     <div fxLayout="column" fxLayoutAlign="space-between start" style="min-height: 360px;">
-        <div *ngFor="let message of messages | async" fxLayout="column" fxLayoutAlign="start start">
-            <span fxLayout="row">{{message.user}} diz: {{message.message}}</span>
-        </div>
+        <nz-list style="width: 100%;">
+            <nz-list-item *ngFor="let message of messages | async">
+                <span fxLayout="row">{{message.user}} diz: {{message.message}}</span>
+            </nz-list-item>
+        </nz-list>
         <div fxFlex>
         </div>
         <nz-input-group nzSearch [nzAddOnAfter]="messageInputEnviar">
-            <input type="text" nz-input placeholder="Mensagem" [(ngModel)]="message.message" name="message">
+            <input type="text" nz-input placeholder="Digite a sua messagem" [(ngModel)]="message.message"
+                name="message">
         </nz-input-group>
         <ng-template #messageInputEnviar>
             <button nz-button nzType="primary" type="submit"
