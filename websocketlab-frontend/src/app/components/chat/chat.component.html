@@ -1,26 +1,19 @@
-<div>
-    <div *ngFor="let message of messages | async" fxLayout="column" fxLayoutAlign=" start">
-        <span>{{message.user}} diz: {{message.message}}</span>
-    </div>
-    <div *ngIf="userValid; else identificacao">
-        <form (submit)="submit()" autocomplete="off">
-            <nz-input-group nzSearch [nzAddOnAfter]="messageInputEnviar">
-                <input type="text" nz-input placeholder="Mensagem" [(ngModel)]="message.message" name="message">
-            </nz-input-group>
-            <ng-template #messageInputEnviar>
-                <button nz-button nzType="primary" type="submit"
-                    [disabled]="!isConnected || message?.message?.trim().length === 0">Enviar</button>
-            </ng-template>
-        </form>
-    </div>
-    <ng-template #identificacao>
-        <div fxLayout="row" fxLayoutAlign="center center" style="min-height: 360px;">
-            <nz-input-group nzSearch [nzAddOnAfter]="entrarInput" style="width: 90vh;">
-                <input type="text" nz-input placeholder="User" [(ngModel)]="message.user" autocomplete>
-            </nz-input-group>
-            <ng-template #entrarInput>
-                <button nz-button nzType="primary" (click)="validarUser()">Entrar</button>
-            </ng-template>
+<form (submit)="submit()" autocomplete="off" *ngIf="userValid; else identificacao">
+    <div fxLayout="column" fxLayoutAlign="space-between start" style="min-height: 360px;">
+        <div *ngFor="let message of messages | async" fxLayout="column" fxLayoutAlign="start start">
+            <span fxLayout="row">{{message.user}} diz: {{message.message}}</span>
         </div>
-    </ng-template>
-</div>
+        <div fxFlex>
+        </div>
+        <nz-input-group nzSearch [nzAddOnAfter]="messageInputEnviar">
+            <input type="text" nz-input placeholder="Mensagem" [(ngModel)]="message.message" name="message">
+        </nz-input-group>
+        <ng-template #messageInputEnviar>
+            <button nz-button nzType="primary" type="submit"
+                [disabled]="!isConnected || message?.message?.trim().length === 0">Enviar</button>
+        </ng-template>
+    </div>
+</form>
+<ng-template #identificacao>
+    <app-identificacao (onComplete)="validarUser($event)"></app-identificacao>
+</ng-template>

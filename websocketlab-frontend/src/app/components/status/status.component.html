@@ -1,1 +1,7 @@
-<h1 style="color: white;">{{(webSocketService.onConnected | async) ? 'Conectado' : 'Desconectado'}}</h1>
+<div fxLayout="column" fxLayoutAlign="center start" style="height: 100%;">
+    <div fxLayout="row" fxLayoutAlign="start center">
+        <div class="dot-offline" *ngIf="!webSocketService.isConnected"></div>
+        <div class="dot-online" *ngIf="webSocketService.isConnected"></div>
+        <h1 class="title" *ngIf="webSocketService?.getMessage()?.user">Olá {{webSocketService?.getMessage()?.user}}</h1>
+    </div>
+</div>

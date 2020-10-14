@@ -1,4 +1,6 @@
-import { Component, OnInit } from '@angular/core';
+import { Component, OnInit, Input, Output } from '@angular/core';
+import { Subject } from 'rxjs';
+import { WebsocketService } from 'src/app/service/websocket.service';
 
 @Component({
   selector: 'app-identificacao',
@@ -7,9 +9,20 @@ import { Component, OnInit } from '@angular/core';
 })
 export class IdentificacaoComponent implements OnInit {
 
-  constructor() { }
+  public user: string;
+
+  @Output()
+  public onComplete: Subject<String> = new Subject();
+
+  constructor(private webSocket: WebsocketService) { }
 
   ngOnInit(): void {
+  }
+
+  submit() {
+    console.log(this.user);
+    this.onComplete.next(this.user);
+    this.webSocket.setMessage({ user: this.user })
   }
 
 }

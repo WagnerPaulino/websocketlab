@@ -10,6 +10,7 @@ import { environment } from 'src/environments/environment';
 export class WebsocketService {
 
   messages: Message[] = [];
+  private message: Message = new Message();
   isConnected: boolean = false;
   onMessages: Subject<Message[]> = new Subject();
   onConnected: Subject<boolean> = new Subject();
@@ -61,5 +62,12 @@ export class WebsocketService {
 
   }
 
+  setMessage(message: Message) {
+    this.message = message;
+  }
+
+  getMessage() {
+    return this.message;
+  }
 
 }

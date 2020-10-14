@@ -1,0 +1,21 @@
+.dot-offline {
+    height: 25px;
+    width: 25px;
+    background-color: #bbb;
+    border-radius: 50%;
+    display: inline-block;
+  }
+
+.dot-online {
+  height: 25px;
+  width: 25px;
+  background-color: #0b0;
+  border-radius: 50%;
+  display: inline-block;
+}
+
+.title {
+    margin: auto;
+    color: white;
+    margin-left: 10px;
+}

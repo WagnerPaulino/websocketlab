@@ -48,7 +48,8 @@ export class ChatComponent implements OnInit {
     }
   }
 
-  validarUser() {
+  validarUser(user: string) {
+    this.message.user = user;
     this.userValid = this.message?.user && this.message?.user?.trim().length > 0;
   }
 
