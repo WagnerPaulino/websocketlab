@@ -2,7 +2,10 @@
     <div fxLayout="column" fxLayoutAlign="space-between start" style="min-height: 360px;">
         <nz-list style="width: 100%;">
             <nz-list-item *ngFor="let message of messages | async">
-                <span fxLayout="row">{{message.user}} diz: {{message.message}}</span>
+                <div fxLayout="row" fxLayoutAlign="center center">
+                    <div class="user-icon">{{message?.user?.toUpperCase()[0]}}</div>
+                    <span><b>{{message.user}} diz:</b> {{message.message}}</span>
+                </div>
             </nz-list-item>
         </nz-list>
         <div fxFlex>
