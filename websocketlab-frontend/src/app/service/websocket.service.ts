@@ -29,6 +29,7 @@ export class WebsocketService {
     console.log('Connected', event);
     this.setConnected(this.rxStompService.connected());
     this.rxStompService.watch('/topic/greetings').subscribe(this.handleMessage);
+    this.rxStompService.watch('/topic/notify').subscribe(console.log);
   }
 
   private handleMessage = (event) => {

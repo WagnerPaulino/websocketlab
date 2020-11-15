@@ -20,7 +20,6 @@ export class IdentificacaoComponent implements OnInit {
   }
 
   submit() {
-    console.log(this.user);
     this.onComplete.next(this.user);
     this.webSocket.setMessage({ user: this.user })
   }
