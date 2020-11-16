@@ -1,8 +1,10 @@
 import { Injectable } from '@angular/core';
-import { RxStompService } from '@stomp/ng2-stompjs';
+import { RxStompService, InjectableRxStompConfig } from '@stomp/ng2-stompjs';
 import { Subject } from 'rxjs';
 import { Message } from '../domain/message';
 import { environment } from 'src/environments/environment';
+import { Usuario } from '../domain/usuario';
+import { HttpClient } from '@angular/common/http';
 
 @Injectable({
   providedIn: 'root'
@@ -14,12 +16,16 @@ export class WebsocketService {
   isConnected: boolean = false;
   onMessages: Subject<Message[]> = new Subject();
   onConnected: Subject<boolean> = new Subject();
+  usuarios: Usuario[] = [];
 
-  constructor(private rxStompService: RxStompService) {
-    this.openWebSocket();
+  constructor(private rxStompService: RxStompService, private http: HttpClient) {
   }
 
-  openWebSocket = () => {
+
+
+  openWebSocket = (usuario) => {
+    this.rxStompService.configure(myRxStompConfig(usuario));
+    this.rxStompService.activate();
     this.rxStompService.connected$.subscribe(this.openned);
     this.rxStompService.stompClient.onWebSocketClose = this.closed;
     this.rxStompService.stompErrors$.subscribe(this.error);
@@ -29,7 +35,11 @@ export class WebsocketService {
     console.log('Connected', event);
     this.setConnected(this.rxStompService.connected());
     this.rxStompService.watch('/topic/greetings').subscribe(this.handleMessage);
-    this.rxStompService.watch('/topic/notify').subscribe(console.log);
+    this.rxStompService.watch('/topic/userEvents').subscribe(({ body }) => {
+      this.usuarios = JSON.parse(body);
+      console.log(this.usuarios);
+    });
+    this.loadUsuarios();
   }
 
   private handleMessage = (event) => {
@@ -71,4 +81,33 @@ export class WebsocketService {
     return this.message;
   }
 
+  getUsuarios(): Usuario[] {
+    return this.usuarios;
+  }
+
+  loadUsuarios() {
+    this.http.get<Usuario[]>(`${environment.urlBackend}/usuarios`).subscribe(usuaurios => this.usuarios = usuaurios)
+  }
+
 }
+
+
+function myRxStompConfig(username): InjectableRxStompConfig {
+  return {
+    brokerURL: environment.urlWebsocket,
+
+    connectHeaders: {
+      login: username,
+      passcode: 'guest'
+    },
+
+    heartbeatIncoming: 0,
+    heartbeatOutgoing: 20000,
+
+    reconnectDelay: 200,
+
+    debug: (msg: string): void => {
+      console.log(msg);
+    }
+  }
+};

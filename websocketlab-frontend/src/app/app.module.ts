@@ -21,10 +21,10 @@ registerLocaleData(pt);
 export const myRxStompConfig: InjectableRxStompConfig = {
   brokerURL: environment.urlWebsocket,
 
-  // connectHeaders: {
-  //   login: 'guest',
-  //   passcode: 'guest'
-  // },
+  connectHeaders: {
+    login: 'guest',
+    passcode: 'guest'
+  },
 
   heartbeatIncoming: 0,
   heartbeatOutgoing: 20000,
@@ -52,15 +52,7 @@ export const myRxStompConfig: InjectableRxStompConfig = {
     BrowserAnimationsModule
   ],
   providers: [
-    {
-      provide: InjectableRxStompConfig,
-      useValue: myRxStompConfig
-    },
-    {
-      provide: RxStompService,
-      useFactory: rxStompServiceFactory,
-      deps: [InjectableRxStompConfig]
-    },
+    RxStompService,
     { provide: NZ_I18N, useValue: pt_BR }
   ],
   bootstrap: [AppComponent]

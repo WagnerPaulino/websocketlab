@@ -1,4 +1,4 @@
-import { Component, OnInit, Input, Output } from '@angular/core';
+import { Component, OnInit, Output } from '@angular/core';
 import { Subject } from 'rxjs';
 import { WebsocketService } from 'src/app/service/websocket.service';
 
@@ -22,6 +22,7 @@ export class IdentificacaoComponent implements OnInit {
   submit() {
     this.onComplete.next(this.user);
     this.webSocket.setMessage({ user: this.user })
+    this.webSocket.openWebSocket(this.user);
   }
 
 }

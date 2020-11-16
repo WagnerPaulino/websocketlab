@@ -16,7 +16,7 @@ export class ChatComponent implements OnInit {
   public isConnected: boolean = false;
   public userValid;
 
-  constructor(private webSocketService: WebsocketService) { }
+  constructor(public webSocketService: WebsocketService) { }
 
   ngOnInit(): void {
     this.initComponent();
@@ -38,7 +38,7 @@ export class ChatComponent implements OnInit {
 
   conectar() {
     if (!this.isConnected) {
-      this.webSocketService.openWebSocket();
+      this.webSocketService.openWebSocket(this.message.user);
     }
   }
 
