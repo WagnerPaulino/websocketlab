@@ -2,6 +2,6 @@
     <div fxLayout="row" fxLayoutAlign="start center">
         <div class="dot-offline" *ngIf="!webSocketService.isConnected"></div>
         <div class="dot-online" *ngIf="webSocketService.isConnected"></div>
-        <h1 class="title" *ngIf="webSocketService?.getMessage()?.user">Olá {{webSocketService?.getMessage()?.user}}</h1>
+        <h1 class="title" *ngIf="webSocketService?.usuario">Olá {{webSocketService?.usuario}}</h1>
     </div>
 </div>

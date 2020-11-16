@@ -2,6 +2,7 @@ import { Component, OnInit } from '@angular/core';
 import { Message } from 'src/app/domain/message';
 import { WebsocketService } from 'src/app/service/websocket.service';
 import { Subject } from 'rxjs';
+import { Router } from '@angular/router';
 
 @Component({
   selector: 'app-chat',
@@ -14,13 +15,14 @@ export class ChatComponent implements OnInit {
   public messages: Subject<Message[]>;
   public onConnected: Subject<boolean> = new Subject<boolean>();
   public isConnected: boolean = false;
-  public userValid;
 
-  constructor(public webSocketService: WebsocketService) { }
+  constructor(public webSocketService: WebsocketService, private router: Router) { }
 
   ngOnInit(): void {
+    if (!this.webSocketService.usuario) {
+      this.router.navigate([''])
+    }
     this.initComponent();
-    this.userValid = false;
   }
 
   private initComponent() {
@@ -31,26 +33,10 @@ export class ChatComponent implements OnInit {
 
   submit() {
     if (this.isConnected) {
+      this.message.user = this.webSocketService.usuario;
       this.webSocketService.sendMessage(this.message);
       this.message.message = '';
     }
-  }
-
-  conectar() {
-    if (!this.isConnected) {
-      this.webSocketService.openWebSocket(this.message.user);
-    }
-  }
-
-  sair() {
-    if (this.isConnected) {
-      this.webSocketService.webSocketClose()
-    }
-  }
-
-  validarUser(user: string) {
-    this.message.user = user;
-    this.userValid = this.message?.user && this.message?.user?.trim().length > 0;
   }
 
 }

@@ -10,7 +10,7 @@
                         <li nz-submenu nzOpen nzTitle="Pessoas online" nzIcon="user">
                             <ul>
                                 <li nz-menu-item *ngFor="let usuario of websocketService.usuarios">
-                                    {{usuario.login[0] === websocketService.getMessage().user ? 'Você' : usuario.login[0]}}
+                                    {{usuario.login[0] === websocketService.usuario ? 'Você' : usuario.login[0]}}
                                 </li>
                             </ul>
                         </li>

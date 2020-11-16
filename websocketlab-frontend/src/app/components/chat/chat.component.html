@@ -1,4 +1,4 @@
-<form (submit)="submit()" autocomplete="off" *ngIf="userValid; else identificacao">
+<form (submit)="submit()" autocomplete="off">
     <div fxLayout="column" fxLayoutAlign="space-between start" style="height: 75vh;">
         <nz-list style="width: 100%;">
             <nz-list-item *ngFor="let message of messages | async">
@@ -20,6 +20,3 @@
         </ng-template>
     </div>
 </form>
-<ng-template #identificacao>
-    <app-identificacao (onComplete)="validarUser($event)"></app-identificacao>
-</ng-template>

@@ -1,6 +1,7 @@
 import { Component, OnInit, Output } from '@angular/core';
 import { Subject } from 'rxjs';
 import { WebsocketService } from 'src/app/service/websocket.service';
+import { Router } from '@angular/router';
 
 @Component({
   selector: 'app-identificacao',
@@ -14,15 +15,16 @@ export class IdentificacaoComponent implements OnInit {
   @Output()
   public onComplete: Subject<String> = new Subject();
 
-  constructor(private webSocket: WebsocketService) { }
+  constructor(private webSocket: WebsocketService, private router: Router) { }
 
   ngOnInit(): void {
   }
 
   submit() {
     this.onComplete.next(this.user);
-    this.webSocket.setMessage({ user: this.user })
+    this.webSocket.setUsuario(this.user);
     this.webSocket.openWebSocket(this.user);
+    this.router.navigate(['chat'])
   }
 
 }

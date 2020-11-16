@@ -17,6 +17,7 @@ export class WebsocketService {
   onMessages: Subject<Message[]> = new Subject();
   onConnected: Subject<boolean> = new Subject();
   usuarios: Usuario[] = [];
+  usuario: string;
 
   constructor(private rxStompService: RxStompService, private http: HttpClient) {
   }
@@ -79,6 +80,10 @@ export class WebsocketService {
 
   getMessage() {
     return this.message;
+  }
+
+  setUsuario(usuario: string) {
+    this.usuario = usuario;
   }
 
   getUsuarios(): Usuario[] {
