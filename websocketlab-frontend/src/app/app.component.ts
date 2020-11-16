@@ -1,4 +1,5 @@
 import { Component } from '@angular/core';
+import { WebsocketService } from './service/websocket.service';
 
 @Component({
   selector: 'app-root',
@@ -6,6 +7,9 @@ import { Component } from '@angular/core';
   styleUrls: ['./app.component.scss']
 })
 export class AppComponent {
+
+  constructor(public websocketService: WebsocketService){}
+
   title = 'websocketlab-frontend';
 
   
